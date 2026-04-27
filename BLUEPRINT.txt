@@ -1,5 +1,5 @@
-spatial_iot_fleet/
-├── edge_device/                    # C++ code for simulated microcontrollers
+spatial-iot-fleet/
+├── edge-device/                    # C++ code for simulated microcontrollers
 │   ├── platformio.ini
 │   └── src/
 │       └── main.cpp                # Broadcasts UDP telemetry packets
@@ -7,16 +7,16 @@ spatial_iot_fleet/
 │   ├── src/
 │   │   ├── main.rs
 │   │   ├── network/
-│   │   │   └── udp_listener.rs     # Ultra-fast ingestion of edge telemetry
+│   │   │   └── udp-listener.rs     # Ultra-fast ingestion of edge telemetry
 │   │   ├── state/
-│   │   │   └── fleet_manager.rs    # In-memory graph of all active hardware nodes
+│   │   │   └── fleet-manager.rs    # In-memory graph of all active hardware nodes
 │   │   └── api/
 │   │       └── websocket.rs        # Streams the fleet state to the browser
 │   └── Cargo.toml
-└── web_client/                     # Vanilla JS + Three.js + Vite
+└── web-client/                     # Vanilla JS + Three.js + Vite
     ├── public/
     │   └── models/
-    │       └── node_geometry.gltf  # 3D mesh for the sensor nodes
+    │       └── node-geometry.gltf  # 3D mesh for the sensor nodes
     ├── src/
     │   ├── main.js                 # Bootstraps the WebGL canvas
     │   ├── scene/
