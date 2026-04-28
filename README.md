@@ -1,78 +1,61 @@
-# Spatial IoT / Sensor Fleet Visualizer (Rust & Three.js)
+# Spatial IoT Fleet
 
-## Description
-`spatial_iot_fleet` is a full-stack, high-performance spatial visualization tool designed for tracking and managing Internet of Things (IoT) hardware. It bridges simulated C++ edge microcontrollers, an ultra-fast Rust backend for telemetry ingestion, and a rich 3D web client powered by Three.js to provide real-time, spatial monitoring of thousands of active nodes.
+Spatial IoT Fleet is a three-part telemetry stack for visualizing large sensor swarms in real time:
 
-## Table of Contents
-- [Features](#-features)
-- [Technologies Used](#%EF%B8%8F-technologies-used)
-- [Installation](#%EF%B8%8F-installation)
-- [Usage](#-usage)
-- [Contributing](#-contributing)
-- [License](#-license)
+- `edge-device`: a PlatformIO-friendly C++ simulator that emits UDP telemetry packets.
+- `server`: a Rust service that ingests UDP packets, maintains in-memory fleet state, and streams snapshots over WebSockets.
+- `web-client`: a Vite and Three.js dashboard that renders the active fleet with `InstancedMesh`.
 
-## 🚀 Features
+## Repository Layout
 
-* **Edge Device Simulation**: Uses C++ and PlatformIO to simulate microcontroller edge nodes that broadcast high-frequency UDP telemetry packets.
-* **Rust Telemetry Server**: A highly optimized Rust backend featuring a `udp_listener` for ultra-fast data ingestion and an in-memory graph (`fleet_manager.rs`) to track the state of all active hardware nodes.
-* **Real-Time Data Streaming**: Seamlessly streams the fleet's active state to the browser via WebSockets.
-* **3D Spatial Visualization**: A front-end WebGL client built with Vanilla JS, Three.js, and Vite. 
-* **High-Performance Rendering**: Utilizes Three.js `InstancedMesh` to efficiently render thousands of 3D sensor nodes (via `.gltf` models) without compromising frame rates, dynamically updating their positions and colors based on the telemetry payload.
+```text
+spatial-iot-fleet/
+|- edge-device/
+|- server/
+`- web-client/
+```
 
-## 🛠️ Technologies Used
-* **Edge / Microcontrollers**: C++, PlatformIO
-* **Backend**: Rust, UDP networking, WebSockets (`Cargo`)
-* **Frontend**: Vanilla JavaScript, Three.js (WebGL), Vite
-* **Networking Protocol**: UDP for ingestion, WebSockets for client streaming
+## Features
 
-## ⚙️ Installation
+- Simulated sensor nodes with deterministic motion and link-quality metadata.
+- Rust-backed fleet state tracking with stale-node pruning.
+- WebSocket snapshot streaming for live browser updates.
+- Three.js scene optimized for large node counts.
+- Placeholder `.gltf` asset staging for future model swaps.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/mtepenner/spatial_iot_fleet.git
-   cd spatial_iot_fleet
-   ```
+## Quick Start
 
-2. **Backend Setup (Rust)**:
-   Ensure you have Rust and Cargo installed, then build the server:
-   ```bash
-   cd server
-   cargo build --release
-   ```
+### 1. Start the Rust telemetry service
 
-3. **Frontend Setup (Web Client)**:
-   Navigate to the web client directory and install dependencies:
-   ```bash
-   cd ../web_client
-   npm install
-   ```
+```bash
+cd server
+cargo run
+```
 
-4. **Edge Simulation Setup**:
-   Open the `edge_device` folder in PlatformIO to build and flash the C++ firmware, or run the local simulation script if configured.
+The service binds UDP on `0.0.0.0:7001` and WebSockets on `0.0.0.0:7002` by default.
 
-## 💻 Usage
+### 2. Start the web client
 
-To launch the spatial tracking environment:
+```bash
+cd web-client
+npm install
+npm run dev
+```
 
-1. **Start the Rust Server**:
-   ```bash
-   cd server
-   cargo run --release
-   ```
-   *The server will begin listening for UDP packets and initialize the WebSocket stream.*
+The dashboard expects the backend WebSocket at `ws://127.0.0.1:7002/ws` unless `VITE_WS_URL` is set.
 
-2. **Start the Web Client**:
-   ```bash
-   cd web_client
-   npm run dev
-   ```
-   *Open the provided localhost URL in your browser to view the 3D WebGL scene.*
+### 3. Emit telemetry from the edge simulator
 
-3. **Initialize the Edge Devices**:
-   Deploy or run the simulated `main.cpp` code via PlatformIO to begin broadcasting UDP telemetry to the Rust server. You will see the 3D meshes spawn and update in real-time in the browser.
+Build or run the C++ simulator from `edge-device` with PlatformIO. For local smoke tests, the source is also compatible with a native C++17 toolchain.
 
-## 🤝 Contributing
-Contributions are welcome! Whether you are optimizing the Rust UDP ingestion layer, adding new 3D models to the Three.js scene, or expanding the edge telemetry data structures, please ensure your code maintains the high-performance standards of the project. Submit a pull request with a clear description of your changes.
+## Validation
 
-## 📄 License
-This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details. Copyright (c) 2026 Matthew Penner.
+```bash
+cd server && cargo check
+cd ../web-client && npm install && npm run build
+```
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+server/target/
+web-client/dist/
+.pio/
+.vscode/
+*.log
+*.tmp
+*.exe
+*.pdb

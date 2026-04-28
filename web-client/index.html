@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spatial IoT Fleet</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hud-bar">
+        <div>
+          <p class="eyebrow">Spatial Mesh Telemetry</p>
+          <h1>Fleet Activity Surface</h1>
+        </div>
+        <div class="metrics">
+          <div class="metric-card">
+            <span>Stream</span>
+            <strong data-stream-state>CONNECTING</strong>
+          </div>
+          <div class="metric-card">
+            <span>Nodes</span>
+            <strong data-node-count>0</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="viewport">
+        <canvas id="fleet-canvas"></canvas>
+        <aside class="legend-panel">
+          <p>Nominal nodes render in green tones.</p>
+          <p>Warning nodes shift toward amber when signal strength degrades.</p>
+          <p>The current scaffold uses a procedural instanced mesh while the staged `.gltf` asset is kept for model swaps.</p>
+        </aside>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
